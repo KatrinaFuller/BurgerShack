@@ -1,33 +1,63 @@
 using System;
+using System.Collections.Generic;
 using BurgerShack.Models;
+using BurgerShack.Repositories;
 
 namespace BurgerShack.Services
 {
   public class ItemsService
   {
-    internal object Get()
+    private readonly ItemsRepository _repo;
+    public ItemsService(ItemsRepository repo)
     {
-      throw new NotImplementedException();
+      _repo = repo;
     }
 
-    internal object Get(string id)
+    public IEnumerable<Item> Get()
     {
-      throw new NotImplementedException();
+      return _repo.Get();
     }
 
-    internal object Create(Item newItem)
+    public Item Get(string id)
     {
-      throw new NotImplementedException();
+      Item exists = _repo.Get(id);
+      if (exists == null)
+      {
+        throw new Exception("Invalid Id");
+      }
+      return exists;
     }
 
-    internal object Edit(Item newItem)
+    public Item Create(Item newItem)
     {
-      throw new NotImplementedException();
+      newItem.Id = Guid.NewGuid().ToString();
+      _repo.Create(newItem);
+      return newItem;
     }
 
-    internal object Delete(string id)
+    public Item Edit(Item newItem)
     {
-      throw new NotImplementedException();
+      Item item = _repo.Get(newItem.Id);
+      if (item == null)
+      {
+        throw new Exception("Invalid Id");
+      }
+      item.Name = newItem.Name;
+      item.Description = newItem.Description;
+      item.Price = newItem.Price;
+      _repo.Edit(item);
+      return item;
+    }
+
+    public string Delete(string id)
+    {
+      Item item = _repo.Get(id);
+      if (item == null)
+      {
+        throw new Exception("Invalid Id");
+      }
+      _repo.Delete(id);
+      return "Successfully deleted";
     }
   }
 }
