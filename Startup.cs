@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using BurgerShack.Repositories;
+using BurgerShack.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -31,6 +33,10 @@ namespace BurgerShack
 
       //connect to db
       services.AddScoped<IDbConnection>(x => CreateDBConnection());
+
+      //registering transient services
+      services.AddTransient<ItemsService>();
+      services.AddTransient<ItemsRepository>();
     }
 
     private IDbConnection CreateDBConnection()
