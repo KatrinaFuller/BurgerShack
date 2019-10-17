@@ -35,7 +35,11 @@ namespace BurgerShack.Services
       throw new NotImplementedException();
     }
 
+<<<<<<< HEAD
     internal object RemoveItemFromOrder(ItemOrder itemOrder)
+=======
+    internal object RemoveShoeFromOrder(ShoeOrder shoeOrder)
+>>>>>>> ad3981eef0a554a12258c02f9f9e72cd41c24b34
     {
       throw new NotImplementedException();
     }
@@ -44,6 +48,9 @@ namespace BurgerShack.Services
     {
       throw new NotImplementedException();
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> ad3981eef0a554a12258c02f9f9e72cd41c24b34
   }
 }
