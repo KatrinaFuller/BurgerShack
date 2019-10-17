@@ -1,34 +1,58 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using BurgerShack.Models;
+using Dapper;
 
 namespace BurgerShack.Repositories
 {
   public class ItemsRepository
   {
-    internal IEnumerable<Item> Get()
+
+    private readonly IDbConnection _db;
+    public ItemsRepository(IDbConnection db)
     {
-      throw new NotImplementedException();
+      _db = db;
     }
 
-    internal Item Get(string id)
+    public IEnumerable<Item> Get()
     {
-      throw new NotImplementedException();
+      string sql = "SELECT * FROM items";
+      return _db.Query<Item>(sql);
     }
 
-    internal void Create(Item newItem)
+    public Item Get(string id)
     {
-      throw new NotImplementedException();
+      string sql = "SELECT * FROM items WHERE id = @id";
+      return _db.QueryFirstOrDefault<Item>(sql, new { id });
     }
 
-    internal void Edit(Item item)
+    public void Create(Item newItem)
     {
-      throw new NotImplementedException();
+      string sql = @"
+      INSERT INTO items
+      (id, name, description, price)
+      VALUES
+      (@Id, @Name, @Description, @Price)";
+      _db.Execute(sql, newItem);
     }
 
-    internal void Delete(string id)
+    public void Edit(Item item)
     {
-      throw new NotImplementedException();
+      string sql = @"
+      UPDATE items
+      SET
+        name = @Name
+        description = @Description
+        price = @Price
+    WHERE id = @Id";
+      _db.Execute(sql, item);
+    }
+
+    public void Delete(string id)
+    {
+      string sql = "DELETE FROM items WHERE id = @id";
+      _db.Execute(sql, new { id });
     }
   }
 }
