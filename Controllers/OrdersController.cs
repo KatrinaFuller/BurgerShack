@@ -97,12 +97,12 @@ namespace BurgerShack.Controllers
     }
 
     [HttpPut("{id}/removeItem")]
-    public ActionResult<string> RemoveShoeFromOrder([FromBody] ShoeOrder shoeOrder, int id)
+    public ActionResult<string> RemoveItemFromOrder([FromBody] ItemOrder itemOrder, int id)
     {
       try
       {
-        shoeOrder.OrderId = id;
-        return Ok(_ordersService.RemoveShoeFromOrder(shoeOrder));
+        itemOrder.OrderId = id;
+        return Ok(_ordersService.RemoveItemFromOrder(itemOrder));
       }
       catch (Exception e)
       {
