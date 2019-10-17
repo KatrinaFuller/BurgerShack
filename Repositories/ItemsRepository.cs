@@ -45,7 +45,7 @@ namespace BurgerShack.Repositories
         name = @Name
         description = @Description
         price = @Price
-    WHERE id = @Id";
+    WHERE id = @id";
       _db.Execute(sql, item);
     }
 
