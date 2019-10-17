@@ -1,56 +1,101 @@
 using System;
+using System.Collections.Generic;
 using BurgerShack.Models;
+using BurgerShack.Repositories;
 
 namespace BurgerShack.Services
 {
   public class OrdersService
   {
-    internal object Get()
+    private readonly OrdersRepository _repo;
+    private readonly ItemsRepository _itemRepo;
+
+    public OrdersService(OrdersRepository repo, ItemsRepository itemRepo)
     {
-      throw new NotImplementedException();
+      _repo = repo;
+      _itemRepo = itemRepo;
     }
 
-    internal object Get(int id)
+    public IEnumerable<Order> Get()
     {
-      throw new NotImplementedException();
+      return _repo.Get();
     }
 
-    internal object GetItems(int id)
+    public Order Get(int id)
     {
-      throw new NotImplementedException();
+      Order exists = _repo.Get(id);
+      if (exists == null)
+      {
+        throw new Exception("Invalid Id");
+      }
+      return exists;
     }
 
-    internal object Create(Order newOrder)
+    public IEnumerable<Item> GetItems(int orderId)
     {
-      throw new NotImplementedException();
+      Order order = _repo.Get(orderId);
+      if (order == null)
+      {
+        throw new Exception("Invalid Id");
+      }
+      return _repo.GetItemsByOrderId(orderId);
     }
 
-    internal object Edit(Order newOrder)
+    public Order Create(Order newOrder)
     {
-      throw new NotImplementedException();
+      int id = _repo.Create(newOrder);
+      newOrder.Id = id;
+      return newOrder;
     }
 
-    internal object AddItemToOrder(int id1, string id2)
+    public Order Edit(Order newData)
     {
-      throw new NotImplementedException();
+      Order order = _repo.Get(newData.Id);
+      if (order == null)
+      {
+        throw new Exception("Invalid Id");
+      }
+      _repo.Edit(order);
+      return order;
     }
 
-<<<<<<< HEAD
-    internal object RemoveItemFromOrder(ItemOrder itemOrder)
-=======
-    internal object RemoveShoeFromOrder(ShoeOrder shoeOrder)
->>>>>>> ad3981eef0a554a12258c02f9f9e72cd41c24b34
+    public string AddItemToOrder(int id, string itemId)
     {
-      throw new NotImplementedException();
+      Order order = _repo.Get(id);
+      if (order == null)
+      {
+        throw new Exception("Invalid Order");
+      }
+      Item itemToAdd = _itemRepo.Get(itemId);
+      if (itemToAdd == null)
+      {
+        throw new Exception("Invalid item");
+      }
+      _repo.AddItemToOrder(id, itemId);
+      return "Successfully added Item to Order";
+
     }
 
-    internal object Delete(int id)
+    public string RemoveItemFromOrder(ItemOrder itemOrder)
     {
-      throw new NotImplementedException();
+      ItemOrder exists = _repo.GetItemOrder(itemOrder);
+      if (exists == null)
+      {
+        throw new Exception("Invalid info");
+      }
+      _repo.RemoveItemFromOrder(exists.Id);
+      return "Successfully removed";
     }
-<<<<<<< HEAD
 
-=======
->>>>>>> ad3981eef0a554a12258c02f9f9e72cd41c24b34
+    public string Delete(int id)
+    {
+      Order order = _repo.Get(id);
+      if (order == null)
+      {
+        throw new Exception("Invalid Id");
+      }
+      _repo.Delete(id);
+      return "Successfully deleted";
+    }
   }
 }
