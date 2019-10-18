@@ -9,3 +9,10 @@ USE burgershack99;
 
 --   PRIMARY KEY(id)
 -- );
+
+-- CREATE TABLE orders
+-- (
+--   id INT NOT NULL AUTO_INCREMENT,
+--   customerName VARCHAR(255) NOT NULL,
+--   PRIMARY KEY(id)
+-- );
